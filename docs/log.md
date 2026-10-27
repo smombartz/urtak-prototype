@@ -1,5 +1,26 @@
 # Change log
 
+## 2026-10-27 - Even pie gaps and full wedge outlines
+
+**Session:** `10448441-16fc-4778-a4e8-d0af9ca6a524`
+
+**What Changed:**
+- Pies are now inline SVG paths instead of two `conic-gradient`-masked circles. Each colour is its own wedge, pulled back from the divider by half the gap so the white gap is the same 2px along both edges at every share
+- Each wedge has its 1px dark outline on every side. The straight edges were unoutlined before because the mask cut the inset box-shadow off
+- A non-zero share is drawn at least 10° wide so a 1% sliver doesn't disappear into the gap
+- Tokens: `--urtak-pie-yes` / `--urtak-pie-no` gradients become `-top` / `-bottom` stop colours; `--urtak-pie-explode` is replaced by `--urtak-pie-gap`, `--urtak-pie-stroke-width` and `--urtak-pie-min-angle`
+- Live widget: `--u-slice` still animates in CSS, and the new `followPie()` redraws the paths each frame from the animated value (`drawPie` is exported from `widget.js`)
+
+**Why:**
+- Feedback: the gap between Yes and No was uneven (the 2px horizontal nudge only opened a gap on edges near vertical), and the dark border was missing on the straight edges between the slices
+
+**Files Modified:**
+- `prototype/widget.js`, `prototype/widget.css`, `prototype/tokens.css`
+- `widget/live.js`, `widget/live.css`
+- `docs/reference.md`
+
+---
+
 ## 2026-10-27 - Pie details only after the slide; thinner scrollbar
 
 **Session:** `9c0aca76-365b-4c8b-bbaa-c43cdcd33a08`

@@ -1,11 +1,11 @@
 /* Motion for the live Urtak widget. Component styles come from ../prototype/widget.css;
  * this file only adds the states and transitions the live engine (live.js) toggles. */
 
-/* Let the pie's slice share animate: --u-slice drives the conic-gradient masks. */
+/* Let the pie's slice share animate: live.js redraws the wedge paths from --u-slice each frame. */
 @property --u-slice { syntax: "<number>"; inherits: true; initial-value: 0; }
 
 .urtak--live .u-pie { transition: --u-slice var(--urtak-live-sweep) var(--urtak-live-ease); }
-.urtak--live .u-pie__base { transition: opacity var(--urtak-live-morph) var(--urtak-live-ease); }
+.urtak--live .u-pie__svg { transition: opacity var(--urtak-live-morph) var(--urtak-live-ease); }
 
 /* ------------------------------------------------------------ Stream motion */
 

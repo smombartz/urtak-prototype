@@ -3,7 +3,7 @@
  * share icons) while the stream slides down and the next question drops in at the top.
  * Component markup and styles come from ../prototype (widget.js builders, widget.css, tokens.css). */
 (function () {
-  const { esc, icon, btn, answers, pie, notice, askCard, prompt, drawer, overlay, loading } = Urtak.parts;
+  const { esc, icon, btn, answers, pie, drawPie, notice, askCard, prompt, drawer, overlay, loading } = Urtak.parts;
   const root = document.getElementById('urtak');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
 
@@ -211,19 +211,32 @@
     glideTimer = setTimeout(() => root.classList.remove('is-gliding'), T.slide);
   }
 
+  // CSS animates --u-slice (live.css); the wedges are SVG paths, so redraw them every frame
+  // from the animated value until it reaches the one we set.
+  function followPie(p) {
+    if (p.dataset.following) return;
+    p.dataset.following = '1';
+    const tick = () => {
+      const now = parseFloat(getComputedStyle(p).getPropertyValue('--u-slice')) || 0;
+      const target = parseFloat(p.style.getPropertyValue('--u-slice')) || 0;
+      drawPie(p, p.dataset.majority === 'no' ? now : 100 - now);
+      if (p.isConnected && Math.abs(now - target) > 0.01) requestAnimationFrame(tick);
+      else delete p.dataset.following;
+    };
+    tick();
+  }
+
   function setPie(el, q, { sweep = false } = {}) {
     const p = el.querySelector('.u-pie');
     if (!p) return;
     const y = yesPct(q);
     const majority = y >= 50 ? 'yes' : 'no';
     const minority = Math.min(y, 100 - y);
-    p.classList.toggle('u-pie--yes', majority === 'yes');
-    p.classList.toggle('u-pie--no', majority === 'no');
+    p.dataset.majority = majority;
     p.classList.toggle('is-pending', q.status === 'pending');
-    if (minority > 0 && !p.querySelector('.u-pie__slice')) p.querySelector('.u-pie__base').insertAdjacentHTML('afterend', '<span class="u-pie__slice"></span>');
     if (q.status !== 'pending') p.querySelector('.u-pie__pending')?.remove();
     if (sweep) { p.style.setProperty('--u-slice', 0); void p.offsetWidth; }
-    requestAnimationFrame(() => p.style.setProperty('--u-slice', minority));
+    requestAnimationFrame(() => { p.style.setProperty('--u-slice', minority); followPie(p); });
     p.setAttribute('aria-label', `${y}% yes, ${100 - y}% no`);
     const dl = el.querySelector('.u-numbers');
     if (dl) dl.innerHTML = numbers(q);

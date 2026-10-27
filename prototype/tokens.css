@@ -214,13 +214,17 @@
   --urtak-button-active-filter: brightness(0.92);
   --urtak-button-disabled-opacity: var(--alpha-50);
 
-  /* Result pie (60px, No slice nudged 2px out) */
+  /* Result pie (60px). Gap, stroke and min angle are in the pie's 60-unit viewBox (read by widget.js). */
   --urtak-pie-size: 60px;
-  --urtak-pie-yes: linear-gradient(to top, var(--blue-600), var(--blue-500));
+  --urtak-pie-yes-top: var(--blue-500);
+  --urtak-pie-yes-bottom: var(--blue-600);
   --urtak-pie-yes-stroke: var(--blue-700);
-  --urtak-pie-no: linear-gradient(to top, var(--orange-600), var(--orange-500));
+  --urtak-pie-no-top: var(--orange-500);
+  --urtak-pie-no-bottom: var(--orange-600);
   --urtak-pie-no-stroke: var(--orange-700);
-  --urtak-pie-explode: -2px;
+  --urtak-pie-gap: 2px;            /* white gap between Yes and No, even along both edges */
+  --urtak-pie-stroke-width: 1px;   /* dark outline on every edge of each wedge */
+  --urtak-pie-min-angle: 10deg;    /* a 1% share still shows as a sliver */
   --urtak-pie-cover: rgb(255 255 255 / 0.9);
   --urtak-pie-pending-opacity: 0.1;
   --urtak-numbers-label-width: 28px;

@@ -56,16 +56,65 @@
     </article>`;
   }
 
-  function pie(it, size) {
-    // Majority fills the circle; the minority slice runs counter-clockwise from 12 o'clock
-    // and is nudged 2px left, as in the comps.
-    const yes = it.yes ?? 50;
-    const majority = yes >= 50 ? 'yes' : 'no';
+  // Pie geometry, drawn in a 60×60 viewBox. The minority wedge runs counter-clockwise from
+  // 12 o'clock. Each wedge is its own path, pulled back from the divider by half the gap so the
+  // gap is the same width along both edges, and stroked all round (arc and both straight sides).
+  let pieSeq = 0, pieDims;
+  function pieTokens() {
+    if (!pieDims) {
+      const cs = getComputedStyle(document.documentElement);
+      const num = (name, fallback) => { const v = parseFloat(cs.getPropertyValue(name)); return Number.isFinite(v) ? v : fallback; };
+      pieDims = { gap: num('--urtak-pie-gap', 2), stroke: num('--urtak-pie-stroke-width', 1), min: num('--urtak-pie-min-angle', 10) };
+    }
+    return pieDims;
+  }
+
+  // Path for the wedge from angle a0 (degrees clockwise from 12 o'clock) spanning `span` degrees.
+  // The path sits half a stroke inside the wedge's edge, so the stroke lands just inside it.
+  function wedge(a0, span, { gap, stroke }) {
+    const c = 30, R = c - stroke / 2, h = (gap + stroke) / 2;
+    if (span <= 0) return '';
+    if (span >= 360) return `M${c} ${c - R}A${R} ${R} 0 1 1 ${c} ${c + R}A${R} ${R} 0 1 1 ${c} ${c - R}Z`;
+    const rad = Math.PI / 180, s = span * rad, b = a0 * rad, e = b + s, mid = b + s / 2;
+    const pt = (x, y) => `${(c + x).toFixed(2)} ${(c + y).toFixed(2)}`;
+    const t = Math.sqrt(R * R - h * h);                 // along each side, from the gap line to the rim
+    const r0 = Math.sin(s / 2) ? h / Math.sin(s / 2) : 0; // the two inset sides meet on the bisector
+    const tip = pt(r0 * Math.sin(mid), -r0 * Math.cos(mid));
+    const p0 = pt(h * Math.cos(b) + t * Math.sin(b), h * Math.sin(b) - t * Math.cos(b));
+    const p1 = pt(-h * Math.cos(e) + t * Math.sin(e), -h * Math.sin(e) - t * Math.cos(e));
+    const large = span - 2 * Math.asin(h / R) / rad > 180 ? 1 : 0;
+    return `M${tip}L${p0}A${R} ${R} 0 ${large} 1 ${p1}Z`;
+  }
+
+  function pieShapes(yes) {
+    const dims = pieTokens();
     const minority = Math.min(yes, 100 - yes);
-    return `<div class="u-pie u-pie--${majority}${it.display === 'pending' ? ' is-pending' : ''}"
-        style="--u-slice:${minority}${size ? `;--urtak-pie-size:${size}px` : ''}" role="img"
+    // A tiny share keeps a visible sliver instead of vanishing into the gap.
+    const a = minority > 0 ? Math.max(minority * 3.6, dims.min) : 0;
+    const major = wedge(0, 360 - a, dims), minor = wedge(360 - a, a, dims);
+    return yes >= 50 ? { yes: major, no: minor } : { yes: minor, no: major };
+  }
+
+  // Redraws an existing pie (the live widget calls this while the share animates).
+  function drawPie(el, yes) {
+    const d = pieShapes(yes);
+    el.querySelector('.u-pie__wedge--yes')?.setAttribute('d', d.yes);
+    el.querySelector('.u-pie__wedge--no')?.setAttribute('d', d.no);
+  }
+
+  function pie(it, size) {
+    const yes = it.yes ?? 50;
+    const d = pieShapes(yes), id = `u-pie-${++pieSeq}`;
+    const grad = (k) => `<linearGradient id="${id}-${k}" gradientUnits="userSpaceOnUse" x1="0" y1="60" x2="0" y2="0">
+          <stop class="u-pie__stop u-pie__stop--${k}-bottom"/><stop offset="1" class="u-pie__stop u-pie__stop--${k}-top"/></linearGradient>`;
+    return `<div class="u-pie${it.display === 'pending' ? ' is-pending' : ''}"
+        style="--u-slice:${Math.min(yes, 100 - yes)}${size ? `;--urtak-pie-size:${size}px` : ''}" role="img"
         aria-label="${yes}% yes, ${100 - yes}% no">
-      <span class="u-pie__base"></span>${minority > 0 ? '<span class="u-pie__slice"></span>' : ''}
+      <svg class="u-pie__svg" viewBox="0 0 60 60" aria-hidden="true">
+        <defs>${grad('yes')}${grad('no')}</defs>
+        <path class="u-pie__wedge u-pie__wedge--yes" fill="url(#${id}-yes)" d="${d.yes}"/>
+        <path class="u-pie__wedge u-pie__wedge--no" fill="url(#${id}-no)" d="${d.no}"/>
+      </svg>
       ${it.display === 'pending' ? icon('hourglass', 'u-pie__pending') : ''}
     </div>`;
   }
@@ -310,6 +359,6 @@
   window.Urtak = {
     render, syncScroll, maxScroll,
     // Building blocks, reused by the live widget (../widget/live.js).
-    parts: { esc, icon, btn, answers, pie, notice, askCard, prompt, tab, drawer, overlay, loading, COUNTERS, LOGO },
+    parts: { esc, icon, btn, answers, pie, drawPie, notice, askCard, prompt, tab, drawer, overlay, loading, COUNTERS, LOGO },
   };
 })();

@@ -40,8 +40,14 @@ Google Fonts (Droid Sans is still served there); everything else is local.
   submitted/pending card, the tweet counter counts down.
 - `index.html` holds the icon sprite: the PSD's vector shapes converted to SVG paths with psd-tools
   (`fill-rule: evenodd` where the shape subtracts), plus a hand-drawn hourglass.
-- Pies are two masked circles: the majority colour fills the circle and the minority slice
-  (`conic-gradient` mask, counter-clockwise from 12 o'clock) is nudged 2px left, as in the comps.
+- Pies are inline SVG: `pieShapes()` in `widget.js` builds one path per colour in a 60×60 viewBox.
+  The minority wedge runs counter-clockwise from 12 o'clock. Both wedges are pulled back from the
+  divider by half of `--urtak-pie-gap`, so the white gap is equally wide along both edges, and
+  each wedge has a `--urtak-pie-stroke-width` outline on all three sides (arc and both straight
+  edges). A non-zero share is drawn at least `--urtak-pie-min-angle` wide so it stays visible.
+  The fills are per-pie `<linearGradient>`s whose stop colours come from the `--urtak-pie-*-top`
+  and `--urtak-pie-*-bottom` tokens. The 2012 comps nudged the slice 2px left instead, which left
+  uneven gaps.
 - Real scrolling: the wheel moves the stream; up/down hints and the scrollbar follow.
 
 ### How values were taken from the PSD
@@ -96,4 +102,5 @@ events (new questions, session expired, cookies blocked).
 
 Engine notes: cards are persistent DOM nodes keyed by question id; `flip()` records `offsetTop`
 (unaffected by CSS zoom), changes the DOM, then animates from the old positions. `collapse()`
-animates height and margin to 0. The pie sweep uses `@property --u-slice`.
+animates height and margin to 0. The pie sweep animates `@property --u-slice` in CSS; `followPie()` reads the animated value
+each frame and redraws the wedge paths with `Urtak.parts.drawPie`.
