@@ -1,0 +1,374 @@
+/* Urtak design tokens
+ * Values come from 1201-MagicWidgets.psd (text layers, shape fills, layer styles, layer bounds).
+ * Primitive tokens name raw values; semantic tokens (--urtak-*) say where they're used.
+ * widget.css only references --urtak-* tokens.
+ *
+ * Photoshop → CSS notes
+ *   Gradient angle: css = 90° − ps (PS 90° runs bottom→top, i.e. `to top`).
+ *   Drop shadow at 120°, 1px distance ≈ `0 1px`. PS "size" is used as the CSS blur.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Droid+Sans:wght@400;700&display=swap");
+
+:root {
+  /* ---------------------------------------------------------------- Palette */
+  --blue-50:  #e9f4fc;   /* tab highlight, short-link pill */
+  --blue-200: #a6dcf8;   /* link button */
+  --blue-500: #00aef0;   /* Yes, links */
+  --blue-600: #0089ba;   /* Yes gradient base */
+  --blue-700: #0076a3;   /* Yes pie stroke, links on yellow */
+  --blue-750: #2f84a7;   /* form button border */
+  --sky-400:  #5bb7ec;   /* Custom01 background top */
+  --sky-600:  #3994ce;   /* Custom01 background bottom */
+
+  --orange-500: #ff7100; /* No, logotype */
+  --orange-600: #d96200; /* No gradient base */
+  --orange-700: #bc5300; /* No border / pie stroke */
+  --orange-800: #df6300;
+
+  --green-200: #c4df9b;
+  --green-300: #b5e173;  /* prompt bar top */
+  --green-350: #acd66d;  /* prompt bar bottom */
+  --green-500: #7bcd1a;  /* Ask tab, Show Username, go buttons */
+  --green-550: #6bb217;  /* Ask tab hover */
+  --green-600: #65a915;  /* Ask tab border */
+  --green-700: #3b9840;  /* go button base, lightbox border */
+  --green-900: #0a6b37;  /* text on green */
+  --green-950: #042a16;  /* text on go button */
+
+  --red-50:  #ffeeea;    /* flag YES highlight */
+  --red-500: #e93d0f;    /* Remove, close tab, flagged */
+  --red-700: #bb0000;    /* close tab border */
+
+  --yellow-400: #ffd906; /* log-in notice bottom */
+  --yellow-300: #ffe812; /* log-in notice top */
+
+  --gray-0:   #ffffff;
+  --gray-25:  #fdfdfd;
+  --gray-40:  #fafafa;
+  --gray-50:  #f8f8f8;
+  --gray-60:  #f5f7f6;   /* loading screen, text fields */
+  --gray-100: #f2f2f2;
+  --gray-140: #e9e9e9;   /* pending notice top */
+  --gray-150: #e6e6e6;
+  --gray-175: #e5e5e5;   /* idle icons */
+  --gray-200: #dcdcdc;
+  --gray-210: #dbdbdb;
+  --gray-225: #cfcfcf;   /* pending notice bottom */
+  --gray-300: #cccccc;
+  --gray-400: #bfbfbf;   /* frame rule, faint text */
+  --gray-500: #999999;
+  --gray-550: #737373;
+  --gray-600: #666666;
+  --gray-800: #333333;
+  --gray-1000: #000000;
+
+  --facebook-300: #4a6ca7;
+  --facebook-400: #4171aa;
+  --facebook-500: #3b5998;
+  --twitter-200: #9fe7eb;
+  --twitter-250: #94e7ec;
+  --twitter-500: #1e97cd;
+  --twitter-600: #1b8abb;
+  --twitter-900: #344c4d;
+
+  --sponsor-red: #b02c2a;   /* sampled from the Coca-Cola backdrop */
+  --sponsor-mist-100: #c8cfd3;
+  --sponsor-mist-300: #a8bdc9;
+  --sponsor-mist-400: #9ac0d1;
+
+  --wood-300: #e3ab0a;
+  --wood-500: #d69600;
+  --wood-700: #c17a00;
+
+  /* ------------------------------------------------------------- Typography */
+  --font-sans: "Droid Sans", "Noto Sans", "Open Sans", Arial, sans-serif;
+  --font-sponsor: Arial, "Helvetica Neue", sans-serif;   /* sponsored copy is set in Arial */
+  --font-icon-serif: Georgia, "Times New Roman", serif;   /* the "i" glyph */
+
+  --font-size-7: 7px;
+  --font-size-8: 8px;
+  --font-size-9: 9px;
+  --font-size-10: 10px;
+  --font-size-11: 11px;
+  --font-size-12: 12px;
+  --font-size-13: 13px;
+  --font-size-14: 14px;
+  --font-size-15: 15px;
+  --font-size-20: 20px;
+
+  --line-height-13: 13px;
+  --line-height-16: 16px;
+  --line-height-19: 19px;
+  --line-height-auto: 1.2;      /* Photoshop auto leading */
+
+  --font-weight-regular: 400;
+  --font-weight-bold: 700;
+  --letter-spacing-form: 0.025em; /* PS tracking 25 */
+
+  /* ------------------------------------------------------------------ Space */
+  --space-1: 1px;
+  --space-2: 2px;
+  --space-3: 3px;
+  --space-4: 4px;
+  --space-5: 5px;
+  --space-6: 6px;
+  --space-8: 8px;
+  --space-10: 10px;
+  --space-12: 12px;
+  --space-15: 15px;
+  --space-20: 20px;
+  --space-30: 30px;
+
+  /* ----------------------------------------------------------------- Radius */
+  --radius-0: 0;
+  --radius-1: 1px;
+  --radius-2: 2px;
+  --radius-3: 3px;
+  --radius-round: 50%;
+
+  /* ---------------------------------------------------------------- Opacity */
+  --alpha-5: 0.05;
+  --alpha-10: 0.1;
+  --alpha-20: 0.2;
+  --alpha-26: 0.26;
+  --alpha-30: 0.3;
+  --alpha-50: 0.5;
+  --alpha-80: 0.8;
+  --alpha-90: 0.9;
+
+  /* ----------------------------------------------------------------- Motion */
+  --duration-fast: 140ms;
+  --duration-base: 220ms;
+  --duration-slow: 320ms;
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+
+  /* =================================================== Semantic: Urtak widget */
+
+  /* Text */
+  --urtak-font: var(--font-sans);
+  --urtak-text: var(--gray-800);
+  --urtak-text-muted: var(--gray-600);
+  --urtak-text-subtle: var(--gray-500);
+  --urtak-text-faint: var(--gray-400);
+  --urtak-text-placeholder: var(--gray-500);
+  --urtak-text-on-color: var(--gray-0);
+  --urtak-text-strong: var(--gray-1000);
+  --urtak-separator: var(--gray-300);
+  --urtak-sponsor-font: var(--font-sponsor);
+  --urtak-focus-ring: 0 0 0 2px var(--blue-200);
+  --urtak-link: var(--blue-500);
+  --urtak-link-strong: var(--blue-700);
+  --urtak-yes: var(--blue-500);
+  --urtak-no: var(--orange-500);
+  --urtak-danger: var(--red-500);
+  --urtak-positive: var(--green-500);
+  --urtak-body-size: var(--font-size-11);
+  --urtak-meta-size: var(--font-size-9);
+  --urtak-button-size: var(--font-size-10);
+  --urtak-title-size: var(--font-size-13);
+
+  /* Frame */
+  --urtak-width: 300px;
+  --urtak-height: 290px;
+  --urtak-bg: var(--gray-0);
+  --urtak-stream-bg: var(--gray-0);
+  --urtak-rule: var(--gray-400);
+  --urtak-curl-shadow: rgb(0 0 0 / 0.2);
+  --urtak-curl-depth: 8px;
+  --urtak-curl-fade: 40px;
+
+  /* Stream layout (cards sit at x 11, first card at y 41, 30px apart) */
+  --urtak-stream-pad-x: 11px;
+  --urtak-stream-pad-top: 41px;
+  --urtak-stream-pad-bottom: 40px;
+  --urtak-card-gap: 30px;
+
+  /* Card */
+  --urtak-card-width: 280px;
+  --urtak-card-height: 80px;
+  --urtak-card-pad: 10px;
+  --urtak-card-bg: var(--gray-0);
+  --urtak-card-shadow: 0 1px 6px rgb(0 0 0 / 0.2);
+  --urtak-card-shadow-ask: 0 1px 5px rgb(0 0 0 / 0.1), inset 0 0 0 1px rgb(204 204 204 / 0.5);
+  --urtak-card-shadow-empty: 0 1px 2px rgb(0 0 0 / 0.1), inset 0 0 0 1px rgb(204 204 204 / 0.5);
+  --urtak-card-sponsored-opacity: var(--alpha-80);
+  --urtak-question-width: 170px;
+  --urtak-input-rule: var(--gray-150);
+  --urtak-input-rule-pitch: 15px;
+  --urtak-caret: var(--gray-800);
+
+  /* Answer buttons (70×20, 5px apart) */
+  --urtak-button-width: 70px;
+  --urtak-button-height: 20px;
+  --urtak-button-gap: 5px;
+  --urtak-button-radius: var(--radius-1);
+  --urtak-button-text: var(--gray-0);
+  --urtak-button-yes: linear-gradient(to top, var(--blue-600), var(--blue-500));
+  --urtak-button-yes-border: rgb(0 0 0 / 0.5);
+  --urtak-button-no: linear-gradient(to top, var(--orange-600), var(--orange-500));
+  --urtak-button-no-border: var(--orange-700);
+  --urtak-button-neutral: linear-gradient(to top, var(--gray-550), var(--gray-500));
+  --urtak-button-neutral-border: var(--gray-600);
+  --urtak-button-hover-filter: brightness(1.08);
+  --urtak-button-active-filter: brightness(0.92);
+  --urtak-button-disabled-opacity: var(--alpha-50);
+
+  /* Result pie (60px, No slice nudged 2px out) */
+  --urtak-pie-size: 60px;
+  --urtak-pie-yes: linear-gradient(to top, var(--blue-600), var(--blue-500));
+  --urtak-pie-yes-stroke: var(--blue-700);
+  --urtak-pie-no: linear-gradient(to top, var(--orange-600), var(--orange-500));
+  --urtak-pie-no-stroke: var(--orange-700);
+  --urtak-pie-explode: -2px;
+  --urtak-pie-cover: rgb(255 255 255 / 0.9);
+  --urtak-pie-pending-opacity: 0.1;
+  --urtak-numbers-label-width: 28px;
+
+  /* Icons */
+  --urtak-icon-idle: var(--gray-175);
+  --urtak-icon-twitter: rgb(159 231 235 / 0.5);
+  --urtak-icon-facebook: rgb(59 89 152 / 0.5);
+  --urtak-twitter: var(--twitter-200);
+  --urtak-twitter-ink: var(--twitter-600);
+  --urtak-on-twitter: var(--twitter-900);
+  --urtak-facebook: var(--facebook-500);
+  --urtak-facebook-share: var(--facebook-300);
+  --urtak-on-facebook: var(--gray-50);
+  --urtak-link-chip: var(--blue-200);
+  --urtak-star-on: var(--yellow-400);
+  --urtak-flag-idle: var(--gray-210);
+  --urtak-flag-on: var(--gray-500);
+  --urtak-flag-highlight: var(--red-50);
+
+  /* Notice bars (280×30, 7px pointer) */
+  --urtak-notice-height: 30px;
+  --urtak-notice-pad-x: 10px;
+  --urtak-notice-pointer: 7px;
+  --urtak-notice-positive: linear-gradient(to top, var(--green-350), var(--green-300));
+  --urtak-notice-positive-text: var(--green-900);
+  --urtak-notice-positive-solid: var(--green-300);
+  --urtak-notice-warning: linear-gradient(to top, var(--yellow-400), var(--yellow-300));
+  --urtak-notice-warning-solid: var(--yellow-300);
+  --urtak-notice-neutral: linear-gradient(to top, var(--gray-210), var(--gray-150));
+  --urtak-notice-neutral-solid: var(--gray-150);
+  --urtak-notice-pending: linear-gradient(to top, var(--gray-225), var(--gray-140));
+  --urtak-notice-pending-solid: var(--gray-140);
+  --urtak-plus-bg: var(--green-500);
+
+  /* Tabs */
+  --urtak-tab-shadow: 0 1px 6px rgb(0 0 0 / 0.2);
+  --urtak-tab-radius: var(--radius-3);
+  --urtak-ask-tab-bg: var(--green-500);
+  --urtak-ask-tab-bg-hover: var(--green-550);
+  --urtak-ask-tab-border: var(--green-600);
+  --urtak-close-tab-bg: var(--red-500);
+  --urtak-close-tab-border: var(--red-700);
+  --urtak-info-tab-bg: var(--gray-50);
+  --urtak-info-tab-border: var(--gray-300);
+  --urtak-info-tab-glyph: var(--gray-500);
+  --urtak-info-tab-glyph-open: var(--gray-600);
+  --urtak-info-tab-shadow: 0 -2px 4px rgb(0 0 0 / 0.06);
+
+  /* Info drawer */
+  --urtak-drawer-bg: var(--gray-0);
+  --urtak-drawer-bar-bg: var(--gray-50);
+  --urtak-drawer-border: var(--gray-300);
+  --urtak-drawer-shadow: 0 1px 6px rgb(0 0 0 / 0.2);
+  --urtak-drawer-dimmer: rgb(0 0 0 / 0.1);
+  --urtak-drawer-mini-top: 258px;
+  --urtak-drawer-open-top: 49px;
+  --urtak-drawer-bar-height: 28px;
+  --urtak-drawer-tab-width: 23px;
+  --urtak-drawer-tab-height: 20px;
+  --urtak-menu-highlight: var(--blue-50);
+  --urtak-divider: rgb(0 0 0 / 0.1);
+  --urtak-close-chip: rgb(102 102 102 / 0.5);
+
+  /* Forms (drawer) */
+  --urtak-field-height: 33px;
+  --urtak-field-bg: var(--gray-25);
+  --urtak-field-shadow: inset 0 1px 3px rgb(0 0 0 / 0.55), inset 0 0 0 1px rgb(0 0 0 / 0.4);
+  --urtak-field-text: rgb(0 0 0 / 0.3);
+  --urtak-form-button-height: 31px;
+  --urtak-form-button-gloss: inset 0 1px 1px rgb(255 255 255 / 0.7);
+  --urtak-form-button-overlay: linear-gradient(to top, rgb(0 118 163 / 0.36), rgb(0 174 240 / 0.36));
+  --urtak-form-button-border: var(--blue-750);
+  --urtak-form-primary: var(--blue-500);
+  --urtak-form-primary-text: var(--blue-700);
+  --urtak-form-facebook: var(--facebook-400);
+  --urtak-form-twitter: var(--twitter-250);
+  --urtak-form-twitter-text: var(--twitter-500);
+  --urtak-form-divider-text: var(--gray-400);
+  --urtak-form-icon-rule-dark: rgb(0 0 0 / 0.2);
+  --urtak-form-icon-rule-light: rgb(248 248 248 / 0.2);
+  --urtak-back-emboss: drop-shadow(0 2px 0 var(--gray-0));
+
+  /* Lightbox */
+  --urtak-overlay-dimmer: rgb(0 0 0 / 0.3);
+  --urtak-lightbox-bg: var(--gray-0);
+  --urtak-lightbox-shadow: 0 0 10px rgb(0 0 0 / 0.6);
+  --urtak-lightbox-ring: 4px;
+  --urtak-lightbox-ring-neutral: rgb(102 102 102 / 0.5);
+  --urtak-lightbox-ring-facebook: rgb(59 89 152 / 0.6);
+  --urtak-lightbox-ring-twitter: rgb(159 231 235 / 0.5);
+  --urtak-lightbox-ring-positive: rgb(59 152 64 / 0.5);
+  --urtak-lightbox-title: var(--gray-600);
+  --urtak-lightbox-input-bg: var(--gray-60);
+  --urtak-lightbox-input-shadow: inset 0 0 3px rgb(0 0 0 / 0.3);
+  --urtak-lightbox-button-overlay: linear-gradient(to top, rgb(0 0 0 / 0.18), rgb(0 0 0 / 0));
+  --urtak-lightbox-button-border: inset 0 0 0 1px rgb(0 0 0 / 0.5);
+  --urtak-close-chip-light: var(--gray-200);
+  --urtak-go: linear-gradient(to top, var(--green-700), var(--green-500));
+  --urtak-go-border: var(--green-900);
+  --urtak-go-text: var(--gray-800);
+  --urtak-go-shadow: 0 1px 1px rgb(0 0 0 / 0.2);
+  --urtak-on-positive: var(--green-950);
+
+  /* Loading */
+  --urtak-loading-bg: var(--gray-60);
+  --urtak-logo: var(--orange-500);
+  --urtak-loader-bar-width: 15px;
+  --urtak-loader-bar-height: 4px;
+  --urtak-loader-gap: 2px;
+  --urtak-loader-from: var(--blue-500);
+  --urtak-loader-to: var(--orange-500);
+  --urtak-loader-bar-shade: inset 0 1px 0 rgb(0 0 0 / 0.12);
+
+  /* Scroll */
+  --urtak-scroll-hint-size: 54px;
+  --urtak-scroll-hint-bg: rgb(0 0 0 / 0.05);
+  --urtak-scroll-hint-arrow: rgb(102 102 102 / 0.26);
+  --urtak-scrollbar-track: rgb(0 0 0 / 0.08);
+  --urtak-scrollbar-thumb: linear-gradient(to left, rgb(0 0 0 / 0.26), rgb(0 0 0 / 0.2));
+  --urtak-scrollbar-width: 9px;
+
+  /* Progress counter */
+  --urtak-counter-track: var(--gray-100);
+  --urtak-counter-fill: var(--gray-150);
+  --urtak-counter-text: var(--gray-400);
+}
+
+/* ------------------------------------------------------------------ Themes */
+/* Publishers re-skin the stream by overriding tokens only. */
+
+[data-urtak-theme="blue"] {           /* Custom01: "Blue Gradient" layer, PS 82° */
+  --urtak-stream-bg: linear-gradient(8deg, var(--sky-600), var(--sky-400));
+}
+
+[data-urtak-theme="orange"] {         /* "Orange Gradient" layer, PS 82° */
+  --urtak-stream-bg: linear-gradient(8deg, var(--orange-800), var(--orange-500));
+}
+
+[data-urtak-theme="wood"] {           /* Custom02: wood photo approximated with gradients */
+  --urtak-stream-bg:
+    repeating-linear-gradient(90deg, rgb(0 0 0 / 0) 0 57px, rgb(120 60 0 / 0.35) 57px 58px, rgb(255 230 150 / 0.25) 58px 59px),
+    repeating-linear-gradient(90deg, rgb(0 0 0 / 0) 0 3px, rgb(140 80 0 / 0.08) 3px 4px, rgb(0 0 0 / 0) 4px 9px, rgb(255 210 80 / 0.12) 9px 11px),
+    linear-gradient(90deg, var(--wood-500), var(--wood-300) 18%, var(--wood-700) 36%, var(--wood-500) 52%, var(--wood-300) 70%, var(--wood-700) 86%, var(--wood-500));
+}
+
+[data-urtak-theme="sponsored"] {      /* Sponsored: stands in for the sponsor's photo */
+  --urtak-stream-bg:
+    radial-gradient(120px 220px at 0% 85%, var(--sponsor-red), transparent 70%),
+    linear-gradient(90deg, var(--sponsor-mist-100), var(--sponsor-mist-300) 60%, var(--sponsor-mist-400));
+}

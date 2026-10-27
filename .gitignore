@@ -1,0 +1,13 @@
+# macOS
+.DS_Store
+
+# Dropbox
+*conflicted copy*
+.dropbox
+.dropbox.attr
+
+# DashCode local state
+.dashcode/recurring-state.json
+
+# Source design files (kept outside the repo)
+*.psd

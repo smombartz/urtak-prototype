@@ -1,0 +1,88 @@
+# Change log
+
+## 2026-10-27 - Git repository set up
+
+**Session:** `09c81c02-fc2b-46cc-a0b3-544aedafbcd7`
+
+**What Changed:**
+- Initialised git on branch `main` and made the initial commit
+- Added `.gitignore` for macOS, Dropbox and DashCode local files, plus `*.psd`
+- Noted in `PROJECT.md` that the PSD is kept outside the repo
+
+**Why:**
+- Put the project under version control; the 23 MB PSD stays out of git
+
+**Files Modified:**
+- `.gitignore` (new)
+- `PROJECT.md`
+- `docs/log.md`
+
+---
+
+## 2026-10-27 - Widget rebuilt in HTML/CSS with design tokens
+
+**Session:** `9c0aca76-365b-4c8b-bbaa-c43cdcd33a08`
+
+**What Changed:**
+- Replaced the image-based prototype with the widget drawn in code: `tokens.css` (palette, type, spacing, shadows, gradients, themes), `widget.css`, `widget.js` (renders a state from a view object), `app.js` (39 states, actions, history), `shell.css`
+- Pulled every value from the PSD and its smart objects with psd-tools: fonts (Droid Sans), colours, gradients, strokes, shadows, layer bounds; converted the PSD's vector shapes to an inline SVG icon sprite
+- Pies are CSS conic-gradient masks; scrolling is real; themes (blue, wood, sponsored) only swap tokens
+- Moved the comp PNGs from `prototype/states/` to `design/comps/`; the shell can show the comp beside the coded widget for comparison
+- Removed `prototype/style.css` (replaced by `shell.css`)
+
+**Why:**
+- Requested: recreate the widget in code with CSS tokens instead of image files
+
+**Files Modified:**
+- `prototype/tokens.css` (new)
+- `prototype/widget.css` (new)
+- `prototype/widget.js` (new)
+- `prototype/shell.css` (new)
+- `prototype/app.js`
+- `prototype/index.html`
+- `prototype/style.css` (removed)
+- `design/comps/*.png` (moved from `prototype/states/`)
+- `docs/reference.md`, `docs/plans/2026-10-27-widget-in-code.md`, `PROJECT.md`
+
+---
+
+## 2026-10-27 - Clickable prototype of the Urtak widget
+
+**Session:** `9c0aca76-365b-4c8b-bbaa-c43cdcd33a08`
+
+**What Changed:**
+- Exported all 39 Layer Comps from `1201-MagicWidgets.psd` via a Photoshop script and cropped the narrow 300px widget from each into `prototype/states/`
+- Built a static HTML/CSS/JS clickable prototype: a sidebar listing every comp, hotspots on each state that move between comps, a logged-in flag for the ask flow, Ask tab hover, mouse-wheel scroll, crossfades, 1×/2× zoom, a hotspot toggle and keyboard shortcuts
+- Documented the PSD structure and prototype internals in `docs/reference.md`, filled in `PROJECT.md`, saved the plan
+
+**Why:**
+- Requested: a clickable prototype of the Urtak widget based on the PSD's Layer Comps
+
+**Files Modified:**
+- `prototype/index.html`
+- `prototype/style.css`
+- `prototype/app.js`
+- `prototype/states/*.png` (39 images)
+- `docs/reference.md`
+- `docs/plans/2026-10-27-widget-clickable-prototype.md`
+- `PROJECT.md`
+
+---
+
+## 2026-10-27 - Added DashCode starter files
+
+**What Changed:**
+- Created the DashCode starter files this folder was missing
+
+**Why:**
+- Existing folder added to DashCode
+
+**Files Modified:**
+- `CLAUDE.md`
+- `PROJECT.md`
+- `README.md`
+- `docs/reference.md`
+- `docs/log.md`
+- `docs/plans/`
+
+---
