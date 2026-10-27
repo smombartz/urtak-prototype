@@ -1,5 +1,122 @@
 # Change log
 
+## 2026-10-27 - Scroll arrows hidden for now
+
+**Session:** `10448441-16fc-4778-a4e8-d0af9ca6a524`
+
+**What Changed:**
+- The more-above / more-below arrow circles are hidden with a single `.u-hint { display: none; }` rule. Markup, positions and tokens are untouched, so deleting the rule brings them back
+
+**Why:**
+- Requested: hide the arrows for the time being
+
+**Files Modified:**
+- `prototype/widget.css`
+
+---
+
+## 2026-10-27 - Info tab stays after closing; softer answer crossfade
+
+**Session:** `10448441-16fc-4778-a4e8-d0af9ca6a524`
+
+**What Changed:**
+- Live widget: closing the open info drawer no longer makes the "i" tab vanish. `setDrawer()` moved the new tab element out of the freshly built drawer markup during the slide-down, then copied that markup (now without the tab) into the drawer once the slide finished. It now clones the element instead of moving it
+- Answer → result crossfade has room in the middle: the buttons and flag fade out on an early curve (`--urtak-live-crossfade-out`), and the answer word, pie and share row fade in 150ms later (`--urtak-live-crossfade-gap`) on a late curve (`--urtak-live-crossfade-in`). Both faces now pass through a pale, mostly white stage. Total length is unchanged
+
+**Why:**
+- Bug report: the info tab disappeared after closing the drawer
+- Feedback: the crossfade should pass through a more translucent white version of each face
+
+**Files Modified:**
+- `widget/live.js`, `widget/live.css`, `prototype/tokens.css`
+- `docs/reference.md`
+
+---
+
+## 2026-10-27 - Scroll arrow offset tweak
+
+**Session:** `10448441-16fc-4778-a4e8-d0af9ca6a524`
+
+**What Changed:**
+- Arrow position inside the scroll-hint circles is nudged 2.7px toward each edge, mirrored: the up arrow uses `size * (0.45 + shift) - 6px`, the down arrow `size * (0.55 - shift) - 6px` (both were 0.5)
+
+**Why:**
+- Requested fine-tune of the arrow placement
+
+**Files Modified:**
+- `prototype/widget.css`
+
+---
+
+## 2026-10-27 - Scroll arrows tucked into the edges; white loading screen
+
+**Session:** `10448441-16fc-4778-a4e8-d0af9ca6a524`
+
+**What Changed:**
+- The more-above / more-below circles are now 40% hidden past their edge (top for up, bottom for down), set by `--urtak-scroll-hint-hidden: 0.4`. Before, they sat fully inside the widget
+- Each arrow is moved 20% of the circle away from that edge (`--urtak-scroll-hint-arrow-shift: 0.2`), so it is off the circle's centre and lands in the middle of the visible part
+- The down circle is now positioned from the bottom edge instead of a fixed `top: 245px`
+- Loading screen background is white (`--urtak-loading-bg`: `--gray-60` → `--gray-0`)
+
+**Why:**
+- Feedback: arrows closer to the edges, loading screen without the grey
+
+**Files Modified:**
+- `prototype/tokens.css`, `prototype/widget.css`
+
+---
+
+## 2026-10-27 - Scroll arrows in front of the cards
+
+**Session:** `10448441-16fc-4778-a4e8-d0af9ca6a524`
+
+**What Changed:**
+- The more-above / more-below arrow circles (`.u-hint`) now sit above the card stream (`--u-z-hint` 0 → 2) instead of behind it, and are `pointer-events: none` so clicks still reach the cards underneath
+- The Urtak logo, which shared `--u-z-hint`, keeps its place behind the stream via a new `--u-z-logo: 0`
+
+**Why:**
+- Feedback: the arrows should show in front of all the cards, not behind
+
+**Files Modified:**
+- `prototype/widget.css`
+
+---
+
+## 2026-10-27 - Rounded cards and buttons; pie corners reverted
+
+**Session:** `10448441-16fc-4778-a4e8-d0af9ca6a524`
+
+**What Changed:**
+- Reverted the rounded pie-wedge corners from the previous entry (`--urtak-pie-corner` removed); wedges are back to the plain path with a round stroke join
+- Cards, notice bars and the "Ask your own" prompt bar get a 4px radius (new `--radius-4`, `--urtak-card-radius`)
+- Buttons go from 1px to 3px (`--urtak-button-radius`), now shared by the answer buttons, the drawer form buttons and the lightbox Go button
+
+**Why:**
+- Feedback: the rounding was meant for the buttons and cards, not the pie
+
+**Files Modified:**
+- `prototype/widget.js`, `prototype/widget.css`, `prototype/tokens.css`
+- `docs/reference.md`
+
+---
+
+## 2026-10-27 - Rounder pie corners; centred plus
+
+**Session:** `10448441-16fc-4778-a4e8-d0af9ca6a524`
+
+**What Changed:**
+- Pie wedges now have properly rounded corners: the tip and both rim corners are cut back by `--urtak-pie-corner` (1.5px) and joined with a curve, instead of relying on the stroke's round join (about 0.5px). Narrow slivers round less so they keep their shape
+- The "+" in the green circle (prompt bar and notices) is drawn as two 8×2px CSS bars centred on the 16px circle, as in the comps, instead of a "+" text glyph that sat off-centre. New tokens `--urtak-plus-size`, `--urtak-plus-bar`, `--urtak-plus-stroke`; the span is now empty and `aria-hidden`
+
+**Why:**
+- Feedback: corners slightly more rounded; the plus wasn't centred in its circle
+
+**Files Modified:**
+- `prototype/widget.js`, `prototype/widget.css`, `prototype/tokens.css`
+- `docs/reference.md`
+
+---
+
 ## 2026-10-27 - Even pie gaps and full wedge outlines
 
 **Session:** `10448441-16fc-4778-a4e8-d0af9ca6a524`

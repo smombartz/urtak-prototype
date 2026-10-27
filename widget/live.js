@@ -533,7 +533,8 @@
     el.dataset.pos = to;
     if (from === 'open' && to !== 'open') {      // keep the old content while it slides down
       for (const sel of ['.u-drawer__tab', '.u-drawer__close']) {
-        const a = el.querySelector(sel), b = fresh.querySelector(sel);
+        // Copy, don't move: swapAll() still needs these in `fresh` once the slide ends.
+        const a = el.querySelector(sel), b = fresh.querySelector(sel)?.cloneNode(true);
         if (a && b) a.replaceWith(b); else if (a) a.remove(); else if (b) el.prepend(b);
       }
       await wait(ms('--duration-slow', 320));

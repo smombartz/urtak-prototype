@@ -3,8 +3,9 @@
  * first card at y 41, 30px apart; answer buttons 70×20 at card x 205. */
 
 .urtak {
-  --u-z-hint: 0;
+  --u-z-logo: 0;
   --u-z-stream: 1;
+  --u-z-hint: 2;        /* more-above / more-below arrows float over the cards */
   --u-z-counter: 2;
   --u-z-curl: 3;
   --u-z-tab: 4;
@@ -66,7 +67,7 @@
 .u-curl::after { bottom: 0; background: linear-gradient(to top, var(--urtak-curl-shadow), transparent); }
 
 .u-logo {
-  position: absolute; left: 136px; top: 255px; z-index: var(--u-z-hint);
+  position: absolute; left: 136px; top: 255px; z-index: var(--u-z-logo);
   width: 30px; height: 12px; color: var(--urtak-logo);
 }
 
@@ -76,6 +77,7 @@
   position: relative;
   width: var(--urtak-card-width);
   height: var(--urtak-card-height);
+  border-radius: var(--urtak-card-radius);
   background: var(--urtak-card-bg);
   box-shadow: var(--urtak-card-shadow);
 }
@@ -233,6 +235,7 @@
   width: var(--urtak-card-width);
   min-height: var(--urtak-notice-height);
   padding: 0 var(--urtak-notice-pad-x);
+  border-radius: var(--urtak-card-radius);
   line-height: var(--line-height-13);
 }
 .u-notice--tall { min-height: 46px; padding-block: 8px; }
@@ -262,17 +265,21 @@
   display: flex; align-items: center;
   width: var(--urtak-card-width); height: var(--urtak-notice-height);
   padding: 0 var(--urtak-notice-pad-x);
+  border-radius: var(--urtak-card-radius);
   background: var(--urtak-notice-positive);
   color: var(--urtak-notice-positive-text);
   transition: filter var(--duration-fast);
 }
 .u-prompt:hover { filter: brightness(1.04); }
+/* The plus is two bars drawn on the circle (a "+" glyph sat off-centre, depending on the font). */
 .u-plus {
   position: absolute; right: 10px; top: 50%; translate: 0 -50%;
-  display: grid; place-items: center;
-  width: 16px; height: 16px; border-radius: var(--radius-round);
-  background: var(--urtak-plus-bg); color: var(--urtak-text-on-color);
-  font-size: var(--font-size-20); font-weight: var(--font-weight-bold); line-height: 1;
+  width: var(--urtak-plus-size); height: var(--urtak-plus-size); border-radius: var(--radius-round);
+  color: var(--urtak-text-on-color);
+  background:
+    linear-gradient(currentColor 0 0) center / var(--urtak-plus-bar) var(--urtak-plus-stroke) no-repeat,
+    linear-gradient(currentColor 0 0) center / var(--urtak-plus-stroke) var(--urtak-plus-bar) no-repeat,
+    var(--urtak-plus-bg);
 }
 
 /* ------------------------------------------------------------------- Tabs */
@@ -417,7 +424,7 @@
 .u-form-btn {
   position: relative; display: flex; align-items: center; justify-content: center;
   height: var(--urtak-form-button-height);
-  border-radius: var(--radius-2);
+  border-radius: var(--urtak-button-radius);
   background: var(--urtak-form-button-overlay), var(--u-btn-bg);
   box-shadow: var(--urtak-form-button-gloss), 0 0 0 1px var(--urtak-form-button-border);
   font-size: var(--font-size-15); font-weight: var(--font-weight-bold);
@@ -542,7 +549,7 @@
 
 .u-go {
   display: block; width: 83px; height: 23px;
-  border-radius: var(--radius-1);
+  border-radius: var(--urtak-button-radius);
   background: var(--urtak-go);
   box-shadow: inset 0 0 0 1px var(--urtak-go-border), var(--urtak-go-shadow);
   font-size: var(--urtak-button-size); font-weight: var(--font-weight-bold);
@@ -584,13 +591,18 @@
   border-radius: var(--radius-round);
   background: var(--urtak-scroll-hint-bg); color: var(--urtak-scroll-hint-arrow);
   opacity: 0; transition: opacity var(--duration-base);
+  pointer-events: none;   /* in front of the cards, but clicks go through to them */
 }
+/* Each circle is partly tucked past its edge; the arrow sits off-centre, away from that edge,
+ * so it lands in the middle of the visible part. */
 .u-hint .u-icon { position: absolute; left: 14px; width: 26px; height: 12px; }
-.u-hint--up { top: 1px; }
-.u-hint--up .u-icon { top: 18px; }
-.u-hint--down { top: 245px; }
-.u-hint--down .u-icon { top: 24px; }
+.u-hint--up { top: calc(var(--urtak-scroll-hint-size) * var(--urtak-scroll-hint-hidden) * -1); }
+.u-hint--up .u-icon { top: calc(var(--urtak-scroll-hint-size) * (0.45 + var(--urtak-scroll-hint-arrow-shift)) - 6px); }
+.u-hint--down { bottom: calc(var(--urtak-scroll-hint-size) * var(--urtak-scroll-hint-hidden) * -1); }
+.u-hint--down .u-icon { top: calc(var(--urtak-scroll-hint-size) * (0.55 - var(--urtak-scroll-hint-arrow-shift)) - 6px); }
 .can-scroll-up .u-hint--up, .can-scroll-down .u-hint--down { opacity: 1; }
+/* Hidden for now; delete this rule to bring the more-above / more-below arrows back. */
+.u-hint { display: none; }
 
 .u-scrollbar {
   position: absolute; right: calc(var(--urtak-scrollbar-inset) * -1); top: -1px; bottom: -1px; z-index: var(--u-z-counter);

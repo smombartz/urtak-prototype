@@ -143,13 +143,13 @@
   }
 
   function notice(it) {
-    const plus = it.plus ? `<span class="u-plus">+</span>` : '';
+    const plus = it.plus ? `<span class="u-plus" aria-hidden="true"></span>` : '';
     return `<div class="u-notice u-notice--${it.tone} u-notice--${it.pointer || 'none'}${it.tall ? ' u-notice--tall' : ''}" role="status">
       <p>${it.html}</p>${plus}
     </div>`;
   }
 
-  const prompt = () => btn('ask-open', `<span>Ask your own Yes or No question.</span><span class="u-plus">+</span>`, 'u-prompt');
+  const prompt = () => btn('ask-open', `<span>Ask your own Yes or No question.</span><span class="u-plus" aria-hidden="true"></span>`, 'u-prompt');
 
   const ITEM = { question: questionCard, ask: askCard, result: resultCard, notice, prompt };
 

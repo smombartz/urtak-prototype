@@ -125,6 +125,7 @@
   --radius-1: 1px;
   --radius-2: 2px;
   --radius-3: 3px;
+  --radius-4: 4px;
   --radius-round: 50%;
 
   /* ---------------------------------------------------------------- Opacity */
@@ -189,6 +190,7 @@
   --urtak-card-height: 80px;
   --urtak-card-pad: 10px;
   --urtak-card-bg: var(--gray-0);
+  --urtak-card-radius: var(--radius-4);   /* cards, notices and the prompt bar */
   --urtak-card-shadow: 0 1px 6px rgb(0 0 0 / 0.2);
   --urtak-card-shadow-ask: 0 1px 5px rgb(0 0 0 / 0.1), inset 0 0 0 1px rgb(204 204 204 / 0.5);
   --urtak-card-shadow-empty: 0 1px 2px rgb(0 0 0 / 0.1), inset 0 0 0 1px rgb(204 204 204 / 0.5);
@@ -202,7 +204,7 @@
   --urtak-button-width: 70px;
   --urtak-button-height: 20px;
   --urtak-button-gap: 5px;
-  --urtak-button-radius: var(--radius-1);
+  --urtak-button-radius: var(--radius-3);
   --urtak-button-text: var(--gray-0);
   --urtak-button-yes: linear-gradient(to top, var(--blue-600), var(--blue-500));
   --urtak-button-yes-border: rgb(0 0 0 / 0.5);
@@ -259,6 +261,9 @@
   --urtak-notice-pending: linear-gradient(to top, var(--gray-225), var(--gray-140));
   --urtak-notice-pending-solid: var(--gray-140);
   --urtak-plus-bg: var(--green-500);
+  --urtak-plus-size: 16px;
+  --urtak-plus-bar: 8px;           /* plus arms, as in the comps: 8px long, 2px thick */
+  --urtak-plus-stroke: 2px;
 
   /* Tabs */
   --urtak-tab-shadow: 0 1px 6px rgb(0 0 0 / 0.2);
@@ -330,7 +335,7 @@
   --urtak-on-positive: var(--green-950);
 
   /* Loading */
-  --urtak-loading-bg: var(--gray-60);
+  --urtak-loading-bg: var(--gray-0);
   --urtak-logo: var(--orange-500);
   --urtak-loader-bar-width: 15px;
   --urtak-loader-bar-height: 4px;
@@ -341,6 +346,8 @@
 
   /* Scroll */
   --urtak-scroll-hint-size: 54px;
+  --urtak-scroll-hint-hidden: 0.4;       /* share of the circle tucked past the widget's edge */
+  --urtak-scroll-hint-arrow-shift: 0.2;  /* arrow moved off the circle's centre, away from the edge */
   --urtak-scroll-hint-bg: rgb(0 0 0 / 0.05);
   --urtak-scroll-hint-arrow: rgb(102 102 102 / 0.26);
   --urtak-scrollbar-track: rgb(0 0 0 / 0.08);
@@ -353,6 +360,9 @@
   /* Live widget motion (widget/live.css, read by widget/live.js) */
   --urtak-live-morph: 420ms;        /* pending → approved, notices */
   --urtak-live-crossfade: 600ms;    /* buttons ⇄ result on the same card */
+  --urtak-live-crossfade-gap: 150ms; /* the result waits this long, so the card dips toward white mid-fade */
+  --urtak-live-crossfade-out: cubic-bezier(0.2, 0, 0.4, 1); /* outgoing face drops off early */
+  --urtak-live-crossfade-in: cubic-bezier(0.5, 0, 0.6, 1);  /* incoming face builds up late */
   --urtak-live-pressed-delay: 100ms;/* the button you pressed fades out this much later */
   --urtak-live-slide-delay: 260ms;  /* the stream starts sliding once the crossfade is under way */
   --urtak-live-slide: 1100ms;       /* stream slides down for a new card */

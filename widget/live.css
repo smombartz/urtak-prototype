@@ -21,11 +21,13 @@
 .urtak--live .u-stream > .is-swapping { opacity: 0; transition-duration: var(--urtak-live-fade); }
 
 /* --------------------------------------------- One card, two faces (question → result) */
-/* A plain crossfade: the buttons fade out while the result fades in, in the same spot.
-   The button you pressed lingers a little (--urtak-live-pressed-delay). */
+/* A crossfade with a little room in the middle: the buttons fade out on an early curve and the
+   result fades in after --urtak-live-crossfade-gap on a late one, so both pass through a pale,
+   mostly-white stage instead of overlapping at full strength. The button you pressed lingers a
+   little (--urtak-live-pressed-delay). */
 
 .u-live .u-answers .u-btn {
-  transition: opacity var(--urtak-live-crossfade) ease, filter var(--duration-fast);
+  transition: opacity var(--urtak-live-crossfade) var(--urtak-live-crossfade-out), filter var(--duration-fast);
 }
 .u-live.is-answered .u-answers {
   pointer-events: none;
@@ -35,21 +37,21 @@
 .u-live.is-answered .u-answers .u-btn { opacity: 0; }
 .u-live.is-answered .u-answers .u-btn.is-pressed { transition-delay: var(--urtak-live-pressed-delay); }
 
-.u-live .u-flag { transition: opacity var(--urtak-live-crossfade) ease; }
+.u-live .u-flag { transition: opacity var(--urtak-live-crossfade) var(--urtak-live-crossfade-out); }
 .u-live.is-answered .u-flag { opacity: 0; visibility: hidden; }
 .u-live .u-flag.is-asking span { animation: u-live-in var(--urtak-live-fade) ease; }
 
-.u-live__answer { opacity: 0; transition: opacity var(--urtak-live-crossfade) ease; }
-.u-live.is-answered .u-live__answer { opacity: 1; }
+.u-live__answer { opacity: 0; transition: opacity var(--urtak-live-crossfade) var(--urtak-live-crossfade-in); }
+.u-live.is-answered .u-live__answer { opacity: 1; transition-delay: var(--urtak-live-crossfade-gap); }
 .u-answer--dontcare { color: var(--urtak-answer-dontcare); }
 
 .u-live .u-result__chart {
   opacity: 0;
-  transition: opacity var(--urtak-live-crossfade) ease;
+  transition: opacity var(--urtak-live-crossfade) var(--urtak-live-crossfade-in);
   border-radius: var(--radius-round);
   cursor: default;
 }
-.u-live.is-answered .u-result__chart { opacity: 1; }
+.u-live.is-answered .u-result__chart { opacity: 1; transition-delay: var(--urtak-live-crossfade-gap); }
 .u-live .u-result__chart:focus-visible { outline: 2px solid var(--urtak-link); outline-offset: 2px; }
 
 /* Numbers sit behind the pie and show on hover or focus. */
@@ -59,8 +61,8 @@
 /* …but not while cards are crossfading or sliding: only once they've settled. */
 .urtak--live.is-moving .u-live .u-numbers { opacity: 0; }
 
-.u-live .u-social { opacity: 0; transition: opacity var(--urtak-live-crossfade) ease; }
-.u-live.is-answered .u-social { opacity: 1; }
+.u-live .u-social { opacity: 0; transition: opacity var(--urtak-live-crossfade) var(--urtak-live-crossfade-in); }
+.u-live.is-answered .u-social { opacity: 1; transition-delay: var(--urtak-live-crossfade-gap); }
 
 /* Your question: pending → approved flash */
 .u-live.is-flash { animation: u-live-flash 900ms ease; }

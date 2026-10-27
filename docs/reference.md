@@ -48,6 +48,11 @@ Google Fonts (Droid Sans is still served there); everything else is local.
   The fills are per-pie `<linearGradient>`s whose stop colours come from the `--urtak-pie-*-top`
   and `--urtak-pie-*-bottom` tokens. The 2012 comps nudged the slice 2px left instead, which left
   uneven gaps.
+- The green "+" circle (prompt bar, notices) is drawn in CSS: two `--urtak-plus-bar` ×
+  `--urtak-plus-stroke` bars centred on the circle. A text glyph sat off-centre.
+- Corners: cards, notices and the prompt bar use `--urtak-card-radius` (4px); answer, form and
+  lightbox buttons use `--urtak-button-radius` (3px). The 2012 comps had square cards and 1px
+  buttons.
 - Real scrolling: the wheel moves the stream; up/down hints and the scrollbar follow.
 
 ### How values were taken from the PSD
@@ -76,9 +81,10 @@ styles stay in one place.
 
 How Urtak worked (from press coverage and the comps), and how the widget does it:
 - Yes / No / Don't Care on each question; no skipping, but a question can be flagged.
-- Answering turns the same card into its result with a plain crossfade (600ms): the buttons fade
-  out (the one you pressed 100ms later) while your answer word, the pie, the share icons and the
-  byline fade in. 260ms in, the stream starts a slow, soft slide down (1100ms, FLIP animation) and
+- Answering turns the same card into its result with a crossfade (600ms): the buttons fade out
+  on an early curve (the one you pressed 100ms later), and your answer word, the pie and the share
+  icons fade in 150ms later on a late curve (`--urtak-live-crossfade-gap`, `-out`, `-in`). Both
+  faces pass through a pale stage instead of overlapping at full strength. 260ms in, the stream starts a slow, soft slide down (1100ms, FLIP animation) and
   the next question drops in on top. Timings are `--urtak-live-*` tokens.
 - Pies exclude Don't Care; hovering or focusing a pie shows Yes %, No %, Votes and Care %, but
   only once cards have stopped moving (`.is-moving` on the widget hides them during crossfades,
