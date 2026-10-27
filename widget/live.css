@@ -1,0 +1,135 @@
+/* Motion for the live Urtak widget. Component styles come from ../prototype/widget.css;
+ * this file only adds the states and transitions the live engine (live.js) toggles. */
+
+/* Let the pie's slice share animate: --u-slice drives the conic-gradient masks. */
+@property --u-slice { syntax: "<number>"; inherits: true; initial-value: 0; }
+
+.urtak--live .u-pie { transition: --u-slice var(--urtak-live-sweep) var(--urtak-live-ease); }
+.urtak--live .u-pie__base { transition: opacity var(--urtak-live-morph) var(--urtak-live-ease); }
+
+/* ------------------------------------------------------------ Stream motion */
+
+/* Cards slide by FLIP: live.js sets an inverted transform, then clears it. */
+.urtak--live .u-stream > * {
+  transition:
+    transform var(--urtak-live-slide) var(--urtak-live-ease),
+    opacity var(--urtak-live-slide) var(--urtak-live-ease);
+}
+.urtak--live .u-stream > .is-entering { opacity: 0; transform: translateY(var(--urtak-live-enter-offset)); }
+.urtak--live .u-stream > .is-swapping { opacity: 0; transition-duration: var(--urtak-live-fade); }
+
+/* --------------------------------------------- One card, two faces (question → result) */
+
+.u-live .u-answers {
+  transition: opacity var(--urtak-live-fade) ease, transform var(--urtak-live-morph) var(--urtak-live-ease), visibility 0s;
+}
+.u-live.is-answered .u-answers {
+  opacity: 0; transform: translateX(12px) scale(0.96);
+  visibility: hidden; pointer-events: none;
+  transition: opacity var(--urtak-live-fade) ease, transform var(--urtak-live-morph) var(--urtak-live-ease), visibility 0s var(--urtak-live-morph);
+}
+
+.u-live .u-flag { transition: opacity var(--urtak-live-fade) ease; }
+.u-live.is-answered .u-flag { opacity: 0; visibility: hidden; }
+.u-live .u-flag.is-asking span { animation: u-live-in var(--urtak-live-fade) ease; }
+
+.u-live__answer { opacity: 0; transition: opacity var(--urtak-live-morph) ease 200ms; }
+.u-live.is-answered .u-live__answer { opacity: 1; }
+.u-answer--dontcare { color: var(--urtak-answer-dontcare); }
+
+.u-live .u-result__chart {
+  opacity: 0; transform: scale(0.45) rotate(-70deg);
+  transition:
+    opacity var(--urtak-live-morph) ease 120ms,
+    transform var(--urtak-live-morph) var(--urtak-live-spring) 120ms;
+  border-radius: var(--radius-round);
+  cursor: default;
+}
+.u-live.is-answered .u-result__chart { opacity: 1; transform: none; }
+.u-live .u-result__chart:focus-visible { outline: 2px solid var(--urtak-link); outline-offset: 2px; }
+
+/* Numbers sit behind the pie and show on hover or focus. */
+.u-live .u-numbers { opacity: 0; transition: opacity var(--urtak-live-fade) ease; }
+.u-live .u-result__chart:hover .u-numbers,
+.u-live .u-result__chart:focus-visible .u-numbers { opacity: 1; }
+
+.u-live .u-social {
+  opacity: 0; transform: translateY(5px);
+  transition: opacity var(--urtak-live-morph) ease 260ms, transform var(--urtak-live-morph) var(--urtak-live-ease) 260ms;
+}
+.u-live.is-answered .u-social { opacity: 1; transform: none; }
+
+/* Your question: pending → approved flash */
+.u-live.is-flash { animation: u-live-flash 900ms ease; }
+@keyframes u-live-flash {
+  0% { box-shadow: var(--urtak-card-shadow), 0 0 0 0 var(--urtak-live-flash); }
+  30% { box-shadow: var(--urtak-card-shadow), 0 0 0 4px var(--urtak-live-flash); }
+  100% { box-shadow: var(--urtak-card-shadow), 0 0 0 8px transparent; }
+}
+
+/* An empty question can't be submitted. */
+.u-ask.is-shaking { animation: u-live-shake 360ms ease; }
+@keyframes u-live-shake {
+  20%, 60% { transform: translateX(-4px); }
+  40%, 80% { transform: translateX(4px); }
+}
+.u-notice.is-nudged { animation: u-live-shake 360ms ease; }
+
+@keyframes u-live-in { from { opacity: 0; } }
+
+/* ---------------------------------------------------------- "New questions" bar */
+
+.u-refresh {
+  display: flex; align-items: center; gap: 7px;
+  width: var(--urtak-card-width); height: var(--urtak-refresh-height);
+  padding: 0 9px;
+  background: var(--urtak-card-bg);
+  box-shadow: var(--urtak-card-shadow);
+  color: var(--urtak-link);
+}
+.u-refresh:hover span:last-child { text-decoration: underline; }
+.u-refresh__icon {
+  display: grid; place-items: center; flex: none;
+  width: 15px; height: 15px; border-radius: var(--radius-round);
+  background: var(--urtak-refresh-icon-bg); color: var(--urtak-refresh-icon);
+}
+.u-refresh__icon .u-icon { width: 9px; height: 11px; }
+.u-refresh.is-loading .u-refresh__icon .u-icon { animation: u-live-spin 600ms linear infinite; }
+@keyframes u-live-spin { to { transform: rotate(360deg); } }
+
+/* -------------------------------------------------------------------- Chrome */
+
+/* The top-right tab slips up behind the rule while it changes between Ask and Close. */
+.urtak--live .u-tab { transition: transform var(--urtak-live-fade) ease, background-color var(--duration-fast), box-shadow var(--duration-fast); }
+.urtak--live .u-tab.is-hidden { transform: translateY(-110%); }
+
+.u-live-dimmer {
+  opacity: 0; pointer-events: none;
+  transition: opacity var(--duration-slow) var(--ease-out);
+}
+.u-live-dimmer.is-on { opacity: 1; pointer-events: auto; }
+
+.urtak--live .u-drawer__panel > * { transition: opacity var(--urtak-live-fade) ease; }
+.urtak--live .u-drawer.is-fading .u-drawer__panel > * { opacity: 0; }
+
+.u-overlay.is-leaving { animation: u-live-out var(--urtak-live-fade) ease forwards; }
+.u-overlay.is-leaving .u-lightbox { animation: u-live-pop-out var(--urtak-live-fade) ease forwards; }
+@keyframes u-live-out { to { opacity: 0; } }
+@keyframes u-live-pop-out { to { opacity: 0; transform: scale(0.96); } }
+
+.urtak--live .u-loading { transition: opacity var(--duration-slow) ease; }
+.urtak--live .u-loading.is-leaving { opacity: 0; }
+
+.urtak--live .u-counter { transition: opacity var(--urtak-live-morph) ease; }
+.urtak--live .u-counter[hidden] { display: block; opacity: 0; }
+.urtak--live .u-counter__bar span { transition: width var(--urtak-live-morph) var(--urtak-live-ease); }
+
+/* Reduced motion: widget.css turns transitions off; keep simple fades so changes still read. */
+@media (prefers-reduced-motion: reduce) {
+  .urtak--live *, .urtak--live *::before, .urtak--live *::after {
+    transition-property: opacity !important;
+    transition-duration: 150ms !important;
+    transition-delay: 0s !important;
+  }
+  .urtak--live .u-stream > .is-entering { transform: none; }
+}

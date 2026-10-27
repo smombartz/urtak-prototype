@@ -307,5 +307,9 @@
     return y;
   }
 
-  window.Urtak = { render, syncScroll, maxScroll };
+  window.Urtak = {
+    render, syncScroll, maxScroll,
+    // Building blocks, reused by the live widget (../widget/live.js).
+    parts: { esc, icon, btn, answers, pie, notice, askCard, prompt, tab, drawer, overlay, loading, COUNTERS, LOGO },
+  };
 })();

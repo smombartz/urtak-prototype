@@ -60,3 +60,36 @@ Google Fonts (Droid Sans is still served there); everything else is local.
 - The Twitter button glyph in the forms was a PDF smart object; the "t" from the result-card icon is
   used instead.
 - The wide 500px widget isn't built.
+
+## Live widget (`widget/`)
+
+One view that behaves like the real Urtak, instead of one screen per comp. Open
+`widget/index.html`. It links `../prototype/tokens.css`, `../prototype/widget.css` and
+`../prototype/widget.js` (whose builders are exported as `Urtak.parts`), so tokens and component
+styles stay in one place.
+
+How Urtak worked (from press coverage and the comps), and how the widget does it:
+- Yes / No / Don't Care on each question; no skipping, but a question can be flagged.
+- Answering turns the same card into its result: the buttons fade out, your answer is appended to
+  the question, the pie springs in and sweeps to its share, and the share icons and byline appear.
+  At the same time the stream slides down (FLIP animation) and the next question drops in on top.
+- Pies exclude Don't Care; hovering or focusing a pie shows Yes %, No %, Votes and Care %.
+- Questions are served most-cared-about first (care % plus some shuffle).
+- Ask your own: the Ask tab (or the prompt bar shown after the 2nd answer) slides an ask card in at
+  the top and the tab turns into the red close tab. You answer your own question to submit it.
+  Logged out → yellow log-in notice → login/sign-up lightbox → submit resumes. "Moderated" on →
+  pending card (hourglass) that is approved after ~6s; off → published right away. You can remove
+  your question.
+- Happy Ending when the queue is empty (ask card + "Awesome!" notice), then a "New Questions! Click
+  to Load" bar after ~8s that loads three more.
+- Info drawer slides closed → mini → open; Info/FAQ/About and Log In/Sign Up live inside it.
+- Live votes: other readers' votes tick on answered cards, so pies keep moving.
+
+Files: `live.js` (engine), `live.css` (motion only; durations are `--urtak-live-*` tokens in
+`tokens.css`), `page.css` (stand-in article and controls), `index.html` (controls + icon sprite).
+Controls: restart, zoom, logged in, moderated, live votes, counter style, theme, and simulated
+events (new questions, session expired, cookies blocked).
+
+Engine notes: cards are persistent DOM nodes keyed by question id; `flip()` records `offsetTop`
+(unaffected by CSS zoom), changes the DOM, then animates from the old positions. `collapse()`
+animates height and margin to 0. The pie sweep uses `@property --u-slice`.

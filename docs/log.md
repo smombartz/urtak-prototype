@@ -1,5 +1,26 @@
 # Change log
 
+## 2026-10-27 - Live interactive Urtak widget
+
+**Session:** `9c0aca76-365b-4c8b-bbaa-c43cdcd33a08`
+
+**What Changed:**
+- New `widget/` folder: a working Urtak widget in one view. Answering turns the card's buttons into its result (answer word, sweeping pie, share row) while the stream slides down and the next question drops in
+- Ask-your-own flow in place (ask card slides in, log-in notice, login lightbox, pending → approved or published straight away), flagging, Happy Ending + "New Questions" refresh, info drawer, share lightboxes, live vote ticks, progress counter, scrolling
+- Exported the prototype's component builders (`Urtak.parts`) from `prototype/widget.js` so the live engine reuses them
+- Added `--urtak-live-*` motion tokens to `prototype/tokens.css`
+
+**Why:**
+- Requested: a working interactive prototype with sliding cards and transitions, based on how Urtak actually worked (researched from the linked articles)
+
+**Files Modified:**
+- `widget/index.html`, `widget/live.js`, `widget/live.css`, `widget/page.css` (new)
+- `prototype/widget.js` (exports only)
+- `prototype/tokens.css` (motion tokens)
+- `docs/plans/2026-10-27-live-widget.md`, `docs/reference.md`, `PROJECT.md`
+
+---
+
 ## 2026-10-27 - Git repository set up
 
 **Session:** `09c81c02-fc2b-46cc-a0b3-544aedafbcd7`

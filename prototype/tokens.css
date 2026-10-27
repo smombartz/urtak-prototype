@@ -343,6 +343,21 @@
   --urtak-scrollbar-thumb: linear-gradient(to left, rgb(0 0 0 / 0.26), rgb(0 0 0 / 0.2));
   --urtak-scrollbar-width: 9px;
 
+  /* Live widget motion (widget/live.css, read by widget/live.js) */
+  --urtak-live-morph: 420ms;        /* buttons → pie on the same card */
+  --urtak-live-slide: 560ms;        /* stream slides down for a new card */
+  --urtak-live-collapse: 320ms;     /* a card or notice folds away */
+  --urtak-live-sweep: 900ms;        /* pie slice sweeps to its share */
+  --urtak-live-fade: 180ms;
+  --urtak-live-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --urtak-live-spring: cubic-bezier(0.3, 1.45, 0.5, 1);
+  --urtak-live-enter-offset: -36px;
+  --urtak-live-flash: rgb(123 205 26 / 0.55);
+  --urtak-answer-dontcare: var(--gray-500);
+  --urtak-refresh-height: 26px;
+  --urtak-refresh-icon-bg: var(--gray-200);
+  --urtak-refresh-icon: var(--gray-500);
+
   /* Progress counter */
   --urtak-counter-track: var(--gray-100);
   --urtak-counter-fill: var(--gray-150);
