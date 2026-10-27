@@ -117,3 +117,6 @@ Plan copied to `docs/plans/2026-10-27-live-widget.md` before coding; log entry i
 - Other readers' votes tick in live ("Live votes" toggle), so pies on screen keep moving.
 - Verified in jsdom: 35 checks across the full loop, ask flow, moderation, flag, drawer, share,
   reload; no errors.
+- Feedback round: removed the 1×/2× switch (widget fixed at 1.5×); slide slowed to 1100ms with a
+  soft ease and a gliding scroll-to-top; buttons → pie is now a plain crossfade (no spin/scale or
+  sweep on answer), with the pressed button fading 100ms after the others.

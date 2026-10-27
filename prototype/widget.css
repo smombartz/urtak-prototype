@@ -597,12 +597,12 @@
 .can-scroll-up .u-hint--up, .can-scroll-down .u-hint--down { opacity: 1; }
 
 .u-scrollbar {
-  position: absolute; right: -2px; top: -1px; bottom: -1px; z-index: var(--u-z-counter);
-  width: 13px; background: var(--urtak-scrollbar-track);
+  position: absolute; right: calc(var(--urtak-scrollbar-inset) * -1); top: -1px; bottom: -1px; z-index: var(--u-z-counter);
+  width: var(--urtak-scrollbar-track-width); background: var(--urtak-scrollbar-track);
   opacity: 0; transition: opacity var(--duration-base);
 }
 .u-scrollbar__thumb {
-  position: absolute; left: 1px; width: var(--urtak-scrollbar-width); height: 34px;
+  position: absolute; left: calc(var(--urtak-scrollbar-inset) / 2); width: var(--urtak-scrollbar-width); height: 34px;
   top: calc(var(--u-scroll-ratio, 0) * (100% - 34px));
   background: var(--urtak-scrollbar-thumb);
 }

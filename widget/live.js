@@ -11,7 +11,9 @@
   const token = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
   const ms = (name, fallback) => { const v = parseFloat(token(name)); return Number.isFinite(v) ? v : fallback; };
   const T = {
-    morph: ms('--urtak-live-morph', 420), slide: ms('--urtak-live-slide', 560),
+    morph: ms('--urtak-live-morph', 420), slide: ms('--urtak-live-slide', 1100),
+    crossfade: ms('--urtak-live-crossfade', 600), pressed: ms('--urtak-live-pressed-delay', 100),
+    slideDelay: ms('--urtak-live-slide-delay', 260),
     collapse: ms('--urtak-live-collapse', 320), fade: ms('--urtak-live-fade', 180),
   };
   const wait = (t) => new Promise((r) => setTimeout(r, reduced.matches ? Math.min(t, 150) : t));
@@ -125,12 +127,18 @@
 
   const stream = () => root.querySelector('[data-stream]');
 
+  // While anything slides, the pie's vote details stay hidden (live.css keys off .is-moving).
+  let moving = 0;
+  const beginMove = () => { moving += 1; root.classList.add('is-moving'); };
+  const endMove = () => { moving = Math.max(0, moving - 1); if (!moving) root.classList.remove('is-moving'); };
+
   // FLIP: remember where every card was, change the DOM, then animate from the old spots.
   async function flip(change) {
     const st = stream();
     const before = new Map([...st.children].map((n) => [n, n.offsetTop]));
+    beginMove();
     change();
-    if (reduced.matches) return settle();
+    if (reduced.matches) { endMove(); return settle(); }
     const moved = [];
     for (const n of st.children) {
       if (!before.has(n)) continue;
@@ -146,6 +154,7 @@
       st.querySelectorAll('.is-entering').forEach((n) => n.classList.remove('is-entering'));
     });
     await wait(T.slide);
+    endMove();
     settle();
   }
 
@@ -164,6 +173,7 @@
   async function collapse(el) {
     if (!el || !el.isConnected || el.dataset.collapsing) return;
     el.dataset.collapsing = '1';
+    beginMove();
     const next = el.nextElementSibling;
     const gap = next && !el.previousElementSibling ? parseFloat(getComputedStyle(next).marginTop) : 0;
     el.style.height = el.offsetHeight + 'px';
@@ -177,6 +187,7 @@
     el.style.opacity = '0';
     await wait(T.collapse);
     el.remove();
+    endMove();
     settle();
   }
 
@@ -191,7 +202,14 @@
   }
 
   function settle() { S.scroll = Urtak.syncScroll(root, S.scroll); }
-  function scrollToTop() { S.scroll = Urtak.syncScroll(root, 0); }
+  let glideTimer;
+  function scrollToTop() {
+    if (!S.scroll) return;
+    root.classList.add('is-gliding');
+    S.scroll = Urtak.syncScroll(root, 0);
+    clearTimeout(glideTimer);
+    glideTimer = setTimeout(() => root.classList.remove('is-gliding'), T.slide);
+  }
 
   function setPie(el, q, { sweep = false } = {}) {
     const p = el.querySelector('.u-pie');
@@ -217,31 +235,32 @@
     return [...stream().children].find((n) => n.classList.contains('u-live') && !n.classList.contains('is-answered'));
   }
 
-  async function answer(el, value) {
+  async function answer(el, value, pressed) {
     if (!el || el.classList.contains('is-answered') || S.busy) return;
     S.busy = true;
+    beginMove();   // from the click until the new card has landed
     const q = S.byId[el.dataset.key];
     q[value === 'dontcare' ? 'dc' : value] += 1;
     q.mineAnswer = value;
     S.done += 1;
     S.queue = S.queue.filter((x) => x !== q);
     el.querySelectorAll('.u-answers .u-btn').forEach((b) => { b.disabled = true; });
+    pressed?.classList.add('is-pressed');
 
-    // Same card, new face: answer word, pie, share row.
+    // Same card, new face: the buttons crossfade into the answer word, pie and share row.
     el.querySelector('.u-live__answer').innerHTML = `&nbsp; <b class="u-answer u-answer--${value}">${ANSWER_WORD[value]}</b>`;
     el.insertAdjacentHTML('beforeend', resultHTML(q));
-    el.querySelector('.u-pie').style.setProperty('--u-slice', 0);
     void el.offsetWidth;
     el.classList.add('is-answered');
-    setPie(el, q, { sweep: true });
     announce(`${ANSWER_WORD[value]}. ${yesPct(q)}% of ${total(q).toLocaleString('en-US')} people said yes.`);
     updateCounter();
 
     const hadFocus = root.contains(document.activeElement);
-    await wait(T.morph * 0.45);
+    later(() => el.querySelectorAll('.u-answers, .u-flag').forEach((n) => n.remove()), T.crossfade + T.pressed + 50);
+    await wait(T.slideDelay);
     scrollToTop();
     await advance();
-    later(() => el.querySelectorAll('.u-answers, .u-flag').forEach((n) => n.remove()), T.morph);
+    endMove();
     if (hadFocus) topQuestion()?.querySelector('.u-btn')?.focus({ preventScroll: true });
     S.busy = false;
   }
@@ -554,7 +573,7 @@
   // ----------------------------------------------------------------- Actions
 
   const ACTIONS = {
-    'answer': (v, el) => answer(el.closest('.u-live'), v),
+    'answer': (v, el) => answer(el.closest('.u-live'), v, el),
     'flag': (v, el) => toggleFlag(el.closest('.u-live')),
     'flag-confirm': (v, el) => flag(el.closest('.u-live')),
     'star': (v, el) => { const on = el.classList.toggle('is-on'); el.setAttribute('aria-pressed', on); },
@@ -657,6 +676,7 @@
 
   async function start() {
     resetState();
+    moving = 0;
     S.liveVotes = document.getElementById('liveVotes')?.checked ?? true;
     root.className = 'urtak urtak--live';
     root.dataset.urtakTheme = document.getElementById('theme')?.value || '';

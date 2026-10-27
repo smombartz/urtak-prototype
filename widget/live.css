@@ -12,52 +12,55 @@
 /* Cards slide by FLIP: live.js sets an inverted transform, then clears it. */
 .urtak--live .u-stream > * {
   transition:
-    transform var(--urtak-live-slide) var(--urtak-live-ease),
-    opacity var(--urtak-live-slide) var(--urtak-live-ease);
+    transform var(--urtak-live-slide) var(--urtak-live-slide-ease),
+    opacity var(--urtak-live-slide) var(--urtak-live-slide-ease);
 }
+/* Returning to the top after an answer glides at the same pace (wheel scrolling stays quick). */
+.urtak--live.is-gliding .u-stream { transition: transform var(--urtak-live-slide) var(--urtak-live-slide-ease); }
 .urtak--live .u-stream > .is-entering { opacity: 0; transform: translateY(var(--urtak-live-enter-offset)); }
 .urtak--live .u-stream > .is-swapping { opacity: 0; transition-duration: var(--urtak-live-fade); }
 
 /* --------------------------------------------- One card, two faces (question → result) */
+/* A plain crossfade: the buttons fade out while the result fades in, in the same spot.
+   The button you pressed lingers a little (--urtak-live-pressed-delay). */
 
-.u-live .u-answers {
-  transition: opacity var(--urtak-live-fade) ease, transform var(--urtak-live-morph) var(--urtak-live-ease), visibility 0s;
+.u-live .u-answers .u-btn {
+  transition: opacity var(--urtak-live-crossfade) ease, filter var(--duration-fast);
 }
 .u-live.is-answered .u-answers {
-  opacity: 0; transform: translateX(12px) scale(0.96);
-  visibility: hidden; pointer-events: none;
-  transition: opacity var(--urtak-live-fade) ease, transform var(--urtak-live-morph) var(--urtak-live-ease), visibility 0s var(--urtak-live-morph);
+  pointer-events: none;
+  visibility: hidden;
+  transition: visibility 0s calc(var(--urtak-live-crossfade) + var(--urtak-live-pressed-delay));
 }
+.u-live.is-answered .u-answers .u-btn { opacity: 0; }
+.u-live.is-answered .u-answers .u-btn.is-pressed { transition-delay: var(--urtak-live-pressed-delay); }
 
-.u-live .u-flag { transition: opacity var(--urtak-live-fade) ease; }
+.u-live .u-flag { transition: opacity var(--urtak-live-crossfade) ease; }
 .u-live.is-answered .u-flag { opacity: 0; visibility: hidden; }
 .u-live .u-flag.is-asking span { animation: u-live-in var(--urtak-live-fade) ease; }
 
-.u-live__answer { opacity: 0; transition: opacity var(--urtak-live-morph) ease 200ms; }
+.u-live__answer { opacity: 0; transition: opacity var(--urtak-live-crossfade) ease; }
 .u-live.is-answered .u-live__answer { opacity: 1; }
 .u-answer--dontcare { color: var(--urtak-answer-dontcare); }
 
 .u-live .u-result__chart {
-  opacity: 0; transform: scale(0.45) rotate(-70deg);
-  transition:
-    opacity var(--urtak-live-morph) ease 120ms,
-    transform var(--urtak-live-morph) var(--urtak-live-spring) 120ms;
+  opacity: 0;
+  transition: opacity var(--urtak-live-crossfade) ease;
   border-radius: var(--radius-round);
   cursor: default;
 }
-.u-live.is-answered .u-result__chart { opacity: 1; transform: none; }
+.u-live.is-answered .u-result__chart { opacity: 1; }
 .u-live .u-result__chart:focus-visible { outline: 2px solid var(--urtak-link); outline-offset: 2px; }
 
 /* Numbers sit behind the pie and show on hover or focus. */
 .u-live .u-numbers { opacity: 0; transition: opacity var(--urtak-live-fade) ease; }
 .u-live .u-result__chart:hover .u-numbers,
 .u-live .u-result__chart:focus-visible .u-numbers { opacity: 1; }
+/* …but not while cards are crossfading or sliding: only once they've settled. */
+.urtak--live.is-moving .u-live .u-numbers { opacity: 0; }
 
-.u-live .u-social {
-  opacity: 0; transform: translateY(5px);
-  transition: opacity var(--urtak-live-morph) ease 260ms, transform var(--urtak-live-morph) var(--urtak-live-ease) 260ms;
-}
-.u-live.is-answered .u-social { opacity: 1; transform: none; }
+.u-live .u-social { opacity: 0; transition: opacity var(--urtak-live-crossfade) ease; }
+.u-live.is-answered .u-social { opacity: 1; }
 
 /* Your question: pending → approved flash */
 .u-live.is-flash { animation: u-live-flash 900ms ease; }

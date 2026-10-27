@@ -341,16 +341,22 @@
   --urtak-scroll-hint-arrow: rgb(102 102 102 / 0.26);
   --urtak-scrollbar-track: rgb(0 0 0 / 0.08);
   --urtak-scrollbar-thumb: linear-gradient(to left, rgb(0 0 0 / 0.26), rgb(0 0 0 / 0.2));
-  --urtak-scrollbar-width: 9px;
+  --urtak-scrollbar-scale: 0.25;   /* the PSD's bar (13px track, 9px thumb) at a quarter width */
+  --urtak-scrollbar-track-width: calc(13px * var(--urtak-scrollbar-scale));
+  --urtak-scrollbar-width: calc(9px * var(--urtak-scrollbar-scale));
+  --urtak-scrollbar-inset: calc(2px * var(--urtak-scrollbar-scale));
 
   /* Live widget motion (widget/live.css, read by widget/live.js) */
-  --urtak-live-morph: 420ms;        /* buttons → pie on the same card */
-  --urtak-live-slide: 560ms;        /* stream slides down for a new card */
+  --urtak-live-morph: 420ms;        /* pending → approved, notices */
+  --urtak-live-crossfade: 600ms;    /* buttons ⇄ result on the same card */
+  --urtak-live-pressed-delay: 100ms;/* the button you pressed fades out this much later */
+  --urtak-live-slide-delay: 260ms;  /* the stream starts sliding once the crossfade is under way */
+  --urtak-live-slide: 1100ms;       /* stream slides down for a new card */
   --urtak-live-collapse: 320ms;     /* a card or notice folds away */
   --urtak-live-sweep: 900ms;        /* pie slice sweeps to its share */
   --urtak-live-fade: 180ms;
   --urtak-live-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
-  --urtak-live-spring: cubic-bezier(0.3, 1.45, 0.5, 1);
+  --urtak-live-slide-ease: cubic-bezier(0.45, 0, 0.2, 1);   /* soft start, long settle */
   --urtak-live-enter-offset: -36px;
   --urtak-live-flash: rgb(123 205 26 / 0.55);
   --urtak-answer-dontcare: var(--gray-500);

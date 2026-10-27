@@ -1,5 +1,42 @@
 # Change log
 
+## 2026-10-27 - Pie details only after the slide; thinner scrollbar
+
+**Session:** `9c0aca76-365b-4c8b-bbaa-c43cdcd33a08`
+
+**What Changed:**
+- Live widget: the vote details (Yes/No/Votes/Care) shown on pie hover stay hidden while cards crossfade or slide; `live.js` keeps an `is-moving` class on the widget from the click until the new card has landed (also during folds), and `live.css` hides `.u-numbers` while it's set
+- Scrollbar is 25% of its former width (track 13px → 3.25px, thumb 9px → 2.25px) via new tokens `--urtak-scrollbar-scale`, `--urtak-scrollbar-track-width`, `--urtak-scrollbar-inset`; applies to both the live widget and the prototype
+
+**Why:**
+- Feedback: don't show vote details while the card is moving; scrollbar too wide
+
+**Files Modified:**
+- `widget/live.js`, `widget/live.css`
+- `prototype/tokens.css`, `prototype/widget.css`
+
+---
+
+## 2026-10-27 - Live widget: 1.5× size, slower slide, crossfade results
+
+**Session:** `9c0aca76-365b-4c8b-bbaa-c43cdcd33a08`
+
+**What Changed:**
+- Removed the 1×/2× zoom switch; the widget now always shows at 1.5× (1.2× under 700px, 1× under 420px)
+- Slide after answering is slower and softer: 1100ms with a soft-start ease, starting 260ms into the crossfade; returning to the top glides at the same pace
+- Buttons → result is now a simple crossfade (600ms) instead of the spinning, sweeping pie; the button you pressed fades out 100ms after the others
+- New tokens: `--urtak-live-crossfade`, `--urtak-live-pressed-delay`, `--urtak-live-slide-delay`, `--urtak-live-slide-ease`; removed unused `--urtak-live-spring`
+
+**Why:**
+- Feedback: slide was too fast and abrupt; the result transition should be a smooth crossfade; fixed 1.5× size
+
+**Files Modified:**
+- `widget/index.html`, `widget/page.css`, `widget/live.css`, `widget/live.js`
+- `prototype/tokens.css`
+- `docs/reference.md`, `docs/plans/2026-10-27-live-widget.md`
+
+---
+
 ## 2026-10-27 - Live interactive Urtak widget
 
 **Session:** `9c0aca76-365b-4c8b-bbaa-c43cdcd33a08`

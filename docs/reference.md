@@ -70,10 +70,13 @@ styles stay in one place.
 
 How Urtak worked (from press coverage and the comps), and how the widget does it:
 - Yes / No / Don't Care on each question; no skipping, but a question can be flagged.
-- Answering turns the same card into its result: the buttons fade out, your answer is appended to
-  the question, the pie springs in and sweeps to its share, and the share icons and byline appear.
-  At the same time the stream slides down (FLIP animation) and the next question drops in on top.
-- Pies exclude Don't Care; hovering or focusing a pie shows Yes %, No %, Votes and Care %.
+- Answering turns the same card into its result with a plain crossfade (600ms): the buttons fade
+  out (the one you pressed 100ms later) while your answer word, the pie, the share icons and the
+  byline fade in. 260ms in, the stream starts a slow, soft slide down (1100ms, FLIP animation) and
+  the next question drops in on top. Timings are `--urtak-live-*` tokens.
+- Pies exclude Don't Care; hovering or focusing a pie shows Yes %, No %, Votes and Care %, but
+  only once cards have stopped moving (`.is-moving` on the widget hides them during crossfades,
+  slides and folds).
 - Questions are served most-cared-about first (care % plus some shuffle).
 - Ask your own: the Ask tab (or the prompt bar shown after the 2nd answer) slides an ask card in at
   the top and the tab turns into the red close tab. You answer your own question to submit it.
@@ -87,7 +90,8 @@ How Urtak worked (from press coverage and the comps), and how the widget does it
 
 Files: `live.js` (engine), `live.css` (motion only; durations are `--urtak-live-*` tokens in
 `tokens.css`), `page.css` (stand-in article and controls), `index.html` (controls + icon sprite).
-Controls: restart, zoom, logged in, moderated, live votes, counter style, theme, and simulated
+The widget is drawn at the PSD's 300px and shown at 1.5× (`zoom` in `page.css`; 1.2× under
+700px, 1× under 420px). Controls: restart, logged in, moderated, live votes, counter style, theme, and simulated
 events (new questions, session expired, cookies blocked).
 
 Engine notes: cards are persistent DOM nodes keyed by question id; `flip()` records `offsetTop`
