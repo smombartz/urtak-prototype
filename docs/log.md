@@ -1,5 +1,20 @@
 # Change log
 
+## 2026-10-27 - README: what Urtak was and how it worked
+
+**Session:** `f51df3f7-78eb-4a00-888f-50845a3e25cd`
+
+**What Changed:**
+- Replaced the placeholder README with: Urtak's history and final numbers, how it worked for readers (card stream, Yes/No/Don't Care, result on the same card, ask your own) and publishers (setup, embedding, moderation, cross-tab analysis), question ordering, a map of this repo, and a sources list
+
+**Why:**
+- Collect what was learned from the researched links and the owner's description in one place
+
+**Files Modified:**
+- `README.md`
+
+---
+
 ## 2026-10-27 - Scroll arrows hidden for now
 
 **Session:** `10448441-16fc-4778-a4e8-d0af9ca6a524`
