@@ -152,6 +152,9 @@
     var(--urtak-input-rule) calc(var(--urtak-input-rule-pitch) - 2px) calc(var(--urtak-input-rule-pitch) - 1px),
     transparent calc(var(--urtak-input-rule-pitch) - 1px) var(--urtak-input-rule-pitch));
 }
+/* The lined paper is the focus cue, so no browser outline or ring. */
+.urtak .u-ask__input:focus,
+.urtak .u-ask__input:focus-visible { outline: 0; box-shadow: none; }
 .u-ask__input::placeholder { color: var(--urtak-text-placeholder); opacity: 1; }
 .u-ask--empty .u-ask__input { top: 7px; height: calc(var(--urtak-input-rule-pitch) * 4); font-size: var(--font-size-12); }
 

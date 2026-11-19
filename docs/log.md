@@ -1,5 +1,20 @@
 # Change log
 
+## 2026-11-08 - No focus outline on the ask card's text field
+
+**Session:** `807130d9-be37-45de-a9a8-488a905719e1`
+
+**What Changed:**
+- Added a rule removing the outline and box-shadow when the ask card's textarea is focused
+
+**Why:**
+- The general `.urtak :focus-visible` outline rule outranked the field's own `outline: 0`, so the browser-style highlight showed while typing a question
+
+**Files Modified:**
+- `prototype/widget.css`
+
+---
+
 ## 2026-10-27 - README: what Urtak was and how it worked
 
 **Session:** `f51df3f7-78eb-4a00-888f-50845a3e25cd`
